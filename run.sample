@@ -1,0 +1,17 @@
+minikube start --memory=4096 --cpus=4
+
+minikube status
+minikube dashboard
+
+kubectl create -f https://raw.githubusercontent.com/pythianarora/total-practice/master/sample-kubernetes-code/metrics-server.yaml
+minikube addons enable metrics-server
+
+minikube dashboard
+
+docker build -f Dockerfile -t backend-image:latest .
+minikube image load backend-image:latest
+kubectl apply --filename deployment.yaml
+kubectl apply --filename service.yaml
+kubectl port-forward --address 192.168.10.10 svc/backend-svc 5000:5000
+
+docker run -p 192.168.10.13:5000:1234 --network=host img1
